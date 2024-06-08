@@ -18,9 +18,7 @@ all-features = true
 maintenance = { status = "actively-developed" }
 
 [features]
-default = ["wgpu", "fira-sans"]
-# Enable the `wgpu` GPU-accelerated renderer backend
-wgpu = ["iced_renderer/wgpu", "iced_widget/wgpu"]
+default = ["fira-sans"]
 # Enables the `Image` widget
 image = ["iced_widget/image", "dep:image"]
 # Enables the `Svg` widget
@@ -92,10 +90,8 @@ members = [
     "runtime",
     "style",
     "tiny_skia",
-    "wgpu",
     "widget",
     "winit",
-    "examples/*",
 ]
 
 [workspace.package]
@@ -118,17 +114,18 @@ iced_renderer = { version = "0.12.1", path = "renderer" }
 iced_runtime = { version = "0.12", path = "runtime" }
 iced_style = { version = "0.12", path = "style" }
 iced_tiny_skia = { version = "0.12", path = "tiny_skia" }
-iced_wgpu = { version = "0.12", path = "wgpu" }
 iced_widget = { version = "0.12", path = "widget" }
 iced_winit = { version = "0.12", path = "winit" }
 
 async-std = "1.0"
 bitflags = "2.0"
 bytemuck = { version = "1.0", features = ["derive"] }
-cosmic-text = "0.10"
+bytes = "1.6"
+cosmic-text = { version = "0.11", default-features = false, features = ["std", "swash"] }
+dark-light = "1.0"
 futures = "0.3"
 glam = "0.25"
-glyphon = "0.5"
+glyphon = { git = "https://github.com/hecrj/glyphon.git", rev = "0a688982e914bcd1efe4d30ac0dad0dff3c58b24" }
 guillotiere = "0.6"
 half = "2.2"
 image = "0.24"
@@ -143,13 +140,14 @@ ouroboros = "0.18"
 palette = "0.7"
 qrcode = { version = "0.13", default-features = false }
 raw-window-handle = "0.6"
-resvg = "0.36"
+resvg = "0.41"
 rustc-hash = "1.0"
 smol = "1.0"
 smol_str = "0.2"
 softbuffer = "0.4"
 syntect = "5.1"
 sysinfo = "0.30"
+sys-locale = "0.3.1"
 thiserror = "1.0"
 tiny-skia = "0.11"
 tokio = "1.0"
@@ -160,7 +158,6 @@ wasm-bindgen-futures = "0.4"
 wasm-timer = "0.2"
 web-sys = "=0.3.67"
 web-time = "0.2"
-wgpu = "0.19"
 winapi = "0.3"
 window_clipboard = "0.4.1"
 winit = "0.29"

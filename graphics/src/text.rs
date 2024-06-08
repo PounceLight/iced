@@ -31,16 +31,26 @@ pub fn font_system() -> &'static RwLock<FontSystem> {
     static FONT_SYSTEM: OnceCell<RwLock<FontSystem>> = OnceCell::new();
 
     FONT_SYSTEM.get_or_init(|| {
+        let locale = sys_locale::get_locale().unwrap_or_else(|| {
+            log::warn!("Font system failed to get system locale, falling back to en-US");
+            String::from("en-US")
+        });
+        
+        let mut db = cosmic_text::fontdb::Database::new();
+
+        let _ = db.load_font_source(cosmic_text::fontdb::Source::Binary(Arc::new(
+            include_bytes!("../fonts/Iced-Icons.ttf").as_slice(),
+        )));
+
+        db.load_fonts_dir("assets/fonts");
+
+        db.set_monospace_family("Fira Mono");
+        db.set_sans_serif_family("Fira Sans");
+        db.set_serif_family("DejaVu Serif");
+
+        let font_system = cosmic_text::FontSystem::new_with_locale_and_db(locale, db);
         RwLock::new(FontSystem {
-            raw: cosmic_text::FontSystem::new_with_fonts([
-                cosmic_text::fontdb::Source::Binary(Arc::new(
-                    include_bytes!("../fonts/Iced-Icons.ttf").as_slice(),
-                )),
-                #[cfg(all(target_arch = "wasm32", feature = "fira-sans"))]
-                cosmic_text::fontdb::Source::Binary(Arc::new(
-                    include_bytes!("../fonts/FiraSans-Regular.ttf").as_slice(),
-                )),
-            ]),
+            raw: font_system,
             version: Version::default(),
         })
     })

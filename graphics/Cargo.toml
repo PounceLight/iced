@@ -32,6 +32,7 @@ log.workspace = true
 once_cell.workspace = true
 raw-window-handle.workspace = true
 rustc-hash.workspace = true
+sys-locale.workspace = true
 thiserror.workspace = true
 unicode-segmentation.workspace = true
 xxhash-rust.workspace = true
